@@ -1,15 +1,18 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<math.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+#include <windows.h>
 
 #define TAMANHO 31
 
+int qtd_pontos = 0;
 
 typedef struct {
+	char nome[1];
 	int x;
 	int y;
 }Ponto;
-
 
 
 void alocarMatriz(int ***matriz,int linha,int coluna){
@@ -20,7 +23,11 @@ void alocarMatriz(int ***matriz,int linha,int coluna){
 	}
 	*matriz = m;
 }
-
+/*
+void alocarVetor(Ponto *vetor){
+	Ponto *v = (Ponto *)calloc(10 , sizeof( Ponto));
+	vetor = v;
+}*/
 
 //Faz o plano cartesiano(Vai ser sempre quadrado).
 void carregarPlano(char ***matriz,int tamanho){
@@ -44,18 +51,38 @@ void formatarPlano(char **matriz,int tamanho){
 	}
 }
 
-void criarPonto(Ponto *p,int x,int y){
+//Preciso alocar memoria para trabalhar com struct por referencia
+void criarPonto(Ponto *p,char nome,int x,int y){
 	p -> x = x;
 	p -> y = y;
+	strcpy(p -> nome,&nome);
 }
 
-void inserirPontos(char **matriz,Ponto ponto){
+void inserirPontos(char **matriz,Ponto *vetor_pontos,Ponto ponto){
 	int origem = TAMANHO/2;
 	
+	int i = 0;
+	int p = 0;
+	for(i = 0;i < qtd_pontos;i++){
+		if(strcmp(vetor_pontos[i].nome , ponto.nome) == 0){
+			//Estou removendo o ponto anterior
+			int pontoX = origem + vetor_pontos[i].x;
+			int pontoY = origem - vetor_pontos[i].y;
+			matriz[pontoY][pontoX] = ' ';
+			p = i;
+			//Atualizando o vetor de pontos com as novas coordeanas 
+			strcpy(vetor_pontos[i].nome,ponto.nome);
+			vetor_pontos[i].x = ponto.x;
+			vetor_pontos[i].y = ponto.y;
+		}
+	}
+	//Adicionanndo um novo ponto
 	int pontoX = origem + ponto.x;
-	int pontoY = origem - ponto.y;
-	
+	int pontoY = origem - ponto.y;	
 	matriz[pontoY][pontoX] = '*';
+	
+	
+	qtd_pontos++;
 }
 
 //Você vai gerar um novo vetor centrado na origem
@@ -73,9 +100,9 @@ int produtoEscalar(Ponto A,Ponto B){
 	return A.x * B.x + A.y * B.y;
 }
 
-int multiplicacaoPorEscalar(Ponto A,int escalar,Ponto *resultado){
-	resultado -> x = A.x * escalar;
-	resultado -> y = A.y * escalar;
+int multiplicacaoPorEscalar(Ponto *A,int escalar){
+	A -> x = A -> x * escalar;
+	A -> y = A -> y * escalar;
 }
 
 float moduloVetor(Ponto ponto){
@@ -157,6 +184,8 @@ void translacao_2d(Ponto *ponto,int deslocamentoX,int deslocamentoY){
 int main(){
 	printf("Plano Cartesiano \n");
 	char **plano_cartesiano;
+	Ponto vetor_pontos[10];
+	//alocarVetor(vetor_pontos);
 	carregarPlano(&plano_cartesiano,TAMANHO);
 	formatarPlano(plano_cartesiano,TAMANHO);
 	
@@ -165,25 +194,57 @@ int main(){
 	Ponto pontoC;
 	Ponto pontoD;
 	Ponto pontoE;
+	Ponto pontoF;
+	Ponto pontoG;
+	Ponto pontoH;	
 	
-	criarPonto(&pontoA,2,3);
-	criarPonto(&pontoB,0,-2);
+	criarPonto(&pontoA,'A',3,4);
+	criarPonto(&pontoB,'B',3,5);
+	criarPonto(&pontoC,'C',4,6);
+	criarPonto(&pontoD,'D',5,6);
+	criarPonto(&pontoE,'E',6,5);
+	criarPonto(&pontoF,'F',6,4);
+	criarPonto(&pontoG,'G',4,3);
+	criarPonto(&pontoH,'H',5,3);
 	
-	inserirPontos(plano_cartesiano, pontoA);	
-	//inserirPontos(plano_cartesiano, pontoB);
-	
-	//Operacoes com vetores
-	subtracaoVetor(pontoA,pontoB,&pontoC);
-	somaVetor(pontoA,pontoB,&pontoD);
-	produtoEscalar(pontoA, pontoB);
-	multiplicacaoPorEscalar(pontoB,2,&pontoE);
-	moduloVetor(pontoB);
-	
-	//Tranformações
-	translacao_2d(&pontoA,2,2);
-	inserirPontos(plano_cartesiano,pontoA);
+	inserirPontos(plano_cartesiano,vetor_pontos,pontoA);
+	inserirPontos(plano_cartesiano,vetor_pontos,pontoB);
+	inserirPontos(plano_cartesiano,vetor_pontos,pontoC);
+	inserirPontos(plano_cartesiano,vetor_pontos,pontoD);
+	inserirPontos(plano_cartesiano,vetor_pontos,pontoE);
+	inserirPontos(plano_cartesiano,vetor_pontos,pontoF);
+	inserirPontos(plano_cartesiano,vetor_pontos,pontoG);
+	inserirPontos(plano_cartesiano,vetor_pontos,pontoH);
 
+	
+	
+	//Ao invés de mexer ponto por ponto eu poderioa ter um vetor imagem armazenado os pixels
+	//Lopp de exibicao para translacao
 	imprimirPlano(plano_cartesiano,TAMANHO);
+	Sleep(1000);
+	int i = 0;
+	for(i = 0;i < 2;i++){
+		imprimirPlano(plano_cartesiano,TAMANHO);	
+		multiplicacaoPorEscalar(&pontoA,2);
+		multiplicacaoPorEscalar(&pontoB,2);
+		multiplicacaoPorEscalar(&pontoC,2);
+		multiplicacaoPorEscalar(&pontoD,2);
+		multiplicacaoPorEscalar(&pontoE,2);
+		multiplicacaoPorEscalar(&pontoF,2);
+		multiplicacaoPorEscalar(&pontoG,2);
+		multiplicacaoPorEscalar(&pontoH,2);
+		inserirPontos(plano_cartesiano,vetor_pontos,pontoA);
+		inserirPontos(plano_cartesiano,vetor_pontos,pontoB);
+		inserirPontos(plano_cartesiano,vetor_pontos,pontoC);
+		inserirPontos(plano_cartesiano,vetor_pontos,pontoD);
+		inserirPontos(plano_cartesiano,vetor_pontos,pontoE);
+		inserirPontos(plano_cartesiano,vetor_pontos,pontoF);
+		inserirPontos(plano_cartesiano,vetor_pontos,pontoG);
+		inserirPontos(plano_cartesiano,vetor_pontos,pontoH);
+
+		
+		Sleep(1000);
+	}
 	//Free Matriz
 	return 0;
 }

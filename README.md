@@ -1,2 +1,2 @@
 # Computacao_visual_
-Repositório para estudo de visão computacional
+Repositório para guardar os estudos do meu TCC
