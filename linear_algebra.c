@@ -60,20 +60,17 @@ void criarPonto(Ponto *p,char nome,int x,int y){
 
 void inserirPontos(char **matriz,Ponto *vetor_pontos,Ponto ponto){
 	int origem = TAMANHO/2;
-	
-	int i = 0;
-	int p = 0;
+
+	//Estou removendo o ponto anterior
+	int i,p,ja_existe = 0;
+
 	for(i = 0;i < qtd_pontos;i++){
-		if(strcmp(vetor_pontos[i].nome , ponto.nome) == 0){
-			//Estou removendo o ponto anterior
+		if(strcmp(vetor_pontos[i].nome,ponto.nome) == 0){
 			int pontoX = origem + vetor_pontos[i].x;
 			int pontoY = origem - vetor_pontos[i].y;
 			matriz[pontoY][pontoX] = ' ';
 			p = i;
-			//Atualizando o vetor de pontos com as novas coordeanas 
-			strcpy(vetor_pontos[i].nome,ponto.nome);
-			vetor_pontos[i].x = ponto.x;
-			vetor_pontos[i].y = ponto.y;
+			ja_existe = 1;
 		}
 	}
 	//Adicionanndo um novo ponto
@@ -81,8 +78,21 @@ void inserirPontos(char **matriz,Ponto *vetor_pontos,Ponto ponto){
 	int pontoY = origem - ponto.y;	
 	matriz[pontoY][pontoX] = '*';
 	
+	//Atualizando o vetor de pontos com as novas coordeanas 
+	if(ja_existe == 1){
+		strcpy(vetor_pontos[p].nome,ponto.nome);
+		vetor_pontos[p].x =  ponto.x;
+		vetor_pontos[p].y =  ponto.y;
+		ja_existe = 0;
+	}else{
+		strcpy(vetor_pontos[qtd_pontos].nome,ponto.nome);
+		vetor_pontos[qtd_pontos].x =  ponto.x;
+		vetor_pontos[qtd_pontos].y =  ponto.y;
+		qtd_pontos++;
+	}
 	
-	qtd_pontos++;
+
+	
 }
 
 //Você vai gerar um novo vetor centrado na origem
@@ -180,6 +190,15 @@ void translacao_2d(Ponto *ponto,int deslocamentoX,int deslocamentoY){
 	ponto -> y = resultado[1][0];
 }
 
+//Sem Matrz e sem homogeneidade ,não funciona tão bem
+void rotacao_2d(Ponto *ponto,int angulo){	
+	int rX = cos(angulo) * ponto -> x  -  ponto -> y * sin(angulo);
+	int rY = ponto -> x  * sin(angulo) +  ponto -> y * cos(angulo);
+	
+	ponto -> x = rX;
+	ponto -> y = rY;
+}
+
 
 int main(){
 	printf("Plano Cartesiano \n");
@@ -198,53 +217,70 @@ int main(){
 	Ponto pontoG;
 	Ponto pontoH;	
 	
-	criarPonto(&pontoA,'A',3,4);
-	criarPonto(&pontoB,'B',3,5);
-	criarPonto(&pontoC,'C',4,6);
-	criarPonto(&pontoD,'D',5,6);
-	criarPonto(&pontoE,'E',6,5);
-	criarPonto(&pontoF,'F',6,4);
-	criarPonto(&pontoG,'G',4,3);
-	criarPonto(&pontoH,'H',5,3);
+	criarPonto(&pontoA,'A',2,4);
+	criarPonto(&pontoB,'B',3,4);
+	criarPonto(&pontoC,'C',4,4);
+	criarPonto(&pontoD,'D',2,5);
+	criarPonto(&pontoE,'E',4,5);
+	criarPonto(&pontoF,'F',3,6);
+	criarPonto(&pontoG,'G',3,7);
+	//criarPonto(&pontoH,'H',5,3);
 	
 	inserirPontos(plano_cartesiano,vetor_pontos,pontoA);
+	inserirPontos(plano_cartesiano,vetor_pontos,pontoB);
+	inserirPontos(plano_cartesiano,vetor_pontos,pontoC);	
 	inserirPontos(plano_cartesiano,vetor_pontos,pontoB);
 	inserirPontos(plano_cartesiano,vetor_pontos,pontoC);
 	inserirPontos(plano_cartesiano,vetor_pontos,pontoD);
 	inserirPontos(plano_cartesiano,vetor_pontos,pontoE);
 	inserirPontos(plano_cartesiano,vetor_pontos,pontoF);
-	inserirPontos(plano_cartesiano,vetor_pontos,pontoG);
-	inserirPontos(plano_cartesiano,vetor_pontos,pontoH);
 
 	
+
 	
 	//Ao invés de mexer ponto por ponto eu poderioa ter um vetor imagem armazenado os pixels
 	//Lopp de exibicao para translacao
 	imprimirPlano(plano_cartesiano,TAMANHO);
 	Sleep(1000);
+	
 	int i = 0;
-	for(i = 0;i < 2;i++){
+	int angulo = 30;
+	for(i = 0;i < 10;i++){
 		imprimirPlano(plano_cartesiano,TAMANHO);	
-		multiplicacaoPorEscalar(&pontoA,2);
-		multiplicacaoPorEscalar(&pontoB,2);
-		multiplicacaoPorEscalar(&pontoC,2);
-		multiplicacaoPorEscalar(&pontoD,2);
-		multiplicacaoPorEscalar(&pontoE,2);
-		multiplicacaoPorEscalar(&pontoF,2);
-		multiplicacaoPorEscalar(&pontoG,2);
-		multiplicacaoPorEscalar(&pontoH,2);
+		/*
+		rotacao_2d(&pontoA,angulo);
+		rotacao_2d(&pontoB,angulo);
+		rotacao_2d(&pontoC,angulo);
+		rotacao_2d(&pontoD,angulo);
+		rotacao_2d(&pontoE,angulo);
+		rotacao_2d(&pontoF,angulo);
+	
 		inserirPontos(plano_cartesiano,vetor_pontos,pontoA);
 		inserirPontos(plano_cartesiano,vetor_pontos,pontoB);
 		inserirPontos(plano_cartesiano,vetor_pontos,pontoC);
 		inserirPontos(plano_cartesiano,vetor_pontos,pontoD);
 		inserirPontos(plano_cartesiano,vetor_pontos,pontoE);
 		inserirPontos(plano_cartesiano,vetor_pontos,pontoF);
-		inserirPontos(plano_cartesiano,vetor_pontos,pontoG);
-		inserirPontos(plano_cartesiano,vetor_pontos,pontoH);
-
+		*/
 		
-		Sleep(1000);
+		translacao_2d(&pontoA,0,1);
+		translacao_2d(&pontoB,0,1);
+		translacao_2d(&pontoC,0,1);
+		translacao_2d(&pontoD,0,1);
+		translacao_2d(&pontoE,0,1);
+		translacao_2d(&pontoF,0,1);
+		inserirPontos(plano_cartesiano,vetor_pontos,pontoA);
+		inserirPontos(plano_cartesiano,vetor_pontos,pontoB);
+		inserirPontos(plano_cartesiano,vetor_pontos,pontoC);
+		inserirPontos(plano_cartesiano,vetor_pontos,pontoD);
+		inserirPontos(plano_cartesiano,vetor_pontos,pontoE);
+		inserirPontos(plano_cartesiano,vetor_pontos,pontoF);
+		
+		
+		
+		Sleep(100);
 	}
+	
 	//Free Matriz
 	return 0;
 }
