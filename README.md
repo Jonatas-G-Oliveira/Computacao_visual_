@@ -1,2 +1,2 @@
 # Computacao_visual_
-Repositório para guardar os estudos do meu TCC
+Repositório para guardar de Compútacâo Visual
