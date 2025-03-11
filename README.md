@@ -1,2 +1,2 @@
 # Computacao_visual_
-Repositório para guardar de Computacâo Visual
+Repositório para guardar de Computacão Visual
