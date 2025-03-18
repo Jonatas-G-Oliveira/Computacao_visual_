@@ -1,2 +1,5 @@
-# Computacao_visual_
-Repositório para guardar de Computacão Visual
+# Computação visual
+- **Superficies são manipuladas na memória
+- **Texturas são utilizadas para exibir a imagem novamente
+
+
