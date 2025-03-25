@@ -16,6 +16,7 @@
 // Constantes 
 // ---------------------------------------------
 static const char TITULO[10] = "Janela";
+static const char PATH[50] = "assets/flor.jpg";
 
 enum Constantes {
 	LARGURA = 780,
@@ -222,7 +223,7 @@ static void tonsCinzaEquacao(void){
 
 static void loop(){
 	int resposta;
-	printf("[1] INVERTER IMAGEM | [2]TONS DE CINZA(MEDIA) | [3] TONS DE CINZA(EQUACAO) \n");
+	printf("[1] INVERTER IMAGEM | [2]TONS DE CINZA(MEDIA) | [3] TONS DE CINZA(EQUACAO) | [0] IMAGEM ORIGINAL\n");
 	
 	SDL_Event eventos;
 	bool execucao = true;
@@ -236,6 +237,9 @@ static void loop(){
 			
 			
 			case SDL_EVENT_KEY_DOWN:
+				if(eventos.key.key == SDLK_0 && !eventos.key.repeat){
+					carregarRGBA32(PATH);	
+				}
 				if(eventos.key.key == SDLK_1 && !eventos.key.repeat){
 					inverterImagem();
 				}
@@ -270,7 +274,7 @@ int main(int argc, int *argv[]){
 	}
 
 	
-	carregarRGBA32("assets/flor.jpg");
+	carregarRGBA32(PATH);
 	
 	//Se a textura for maior que a altura,redimensiona a janela.
 	if(retangulo.w > LARGURA || retangulo.h > ALTURA)
