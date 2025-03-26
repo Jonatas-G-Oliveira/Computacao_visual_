@@ -1,5 +1,9 @@
 // -----------------------------------------------------------------
-// Autor: Jonatas Oliveira 
+// Autores: 
+// 10402412 Diego Oliveira Aluizio
+// 10396490 JÃ´natas Garcia de Oliveira 
+// 10403046 Livia Alabarse
+// 10265432 Pedro Henrique Araujo Farias
 // Ano : 03/2025
 
 // ----------------------------------------------
@@ -116,11 +120,11 @@ static void carregarRGBA32(){
 static void inverterImagem(void){
 	if(!superficie)
 	{
-		SDL_Log("Erro em inverterImagem(): Imagem INválida:\n");
+		SDL_Log("Erro em inverterImagem(): Imagem INvÃ¡lida:\n");
 		return;
 	}
 	
-	SDL_LockSurface(superficie); //Você pode escrever  e e ler de uma superficie(Acesso direto)
+	SDL_LockSurface(superficie); //VocÃª pode escrever  e e ler de uma superficie(Acesso direto)
 	
 	const SDL_PixelFormatDetails *format = SDL_GetPixelFormatDetails(superficie->format); //Pega as informaacoes(sao muitas(Apenas Leitura)
 	const size_t total_pixels = superficie -> w * superficie -> h;
@@ -347,7 +351,7 @@ int main(int argc, int *argv[]){
 	if(retangulo.w > LARGURA || retangulo.h > ALTURA)
 	{
 		SDL_SetWindowSize(janela, retangulo.w, retangulo.h);
-		SDL_SyncWindow(janela); //Não sei o que faz exatamente
+		SDL_SyncWindow(janela); //NÃ£o sei o que faz exatamente
 			
 	}
 
