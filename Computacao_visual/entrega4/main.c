@@ -4,6 +4,10 @@
 // 10396490 Jônatas Garcia de Oliveira 
 // 10403046 Livia Alabarse
 // 10265432 Pedro Henrique Araujo Farias
+
+// Referências
+// SPACOF, Ds Tutoriais - Daniel. COMO USAR A JANELA HISTOGRAM | PHOTOSHOP. 2018. 
+// Disponível em: https://www.youtube.com/watch?v=6VV3s9nObe0&ab_channel=DSTutoriais-DanielSpacof. Acesso em: 25 mar. 2025.
 // Ano : 03/2025
 
 // ----------------------------------------------
