@@ -58,7 +58,7 @@ def removerFundoVerde(foreground, background):
     foreground_hsv = cv2.cvtColor(foreground, cv2.COLOR_BGR2HSV)
 
     #Parametros Iniciais
-    linhas, colunas, canais = foreground_hsv.shape
+    linhas, colunas = foreground_hsv.shape[:2]
     mascara = criarMascara(linhas, colunas)
 
     #Acessando o pixel verde e marcando a mascara
@@ -71,6 +71,11 @@ def removerFundoVerde(foreground, background):
     #Cortando o foreground
     foreground_cortado = aplicarMascara(mascara, foreground_hsv, linhas, colunas)
     foreground_bgr = cv2.cvtColor(foreground_cortado, cv2.COLOR_HSV2BGR)
+
+    #Esticando Background se necessário
+    bk_linhas, bk_colunas = background.shape[:2]
+    if linhas > bk_linhas or colunas > bk_colunas:
+        background = cv2.resize(background,  (colunas, linhas), interpolation= cv2.INTER_LINEAR  )
 
     #Cortando o background
     mascara_inv = inverterMascara(mascara, linhas, colunas)
@@ -85,12 +90,12 @@ def main():
     #Criando janelas
     JANELA_PRINCIPAL = "IMG ORIGINAL"
     JANELA_FUNDO = "IMG FUNDO"
-    cv2.namedWindow(JANELA_PRINCIPAL, cv2.WINDOW_NORMAL)
-    cv2.namedWindow(JANELA_FUNDO, cv2.WINDOW_NORMAL)
+    cv2.namedWindow(JANELA_PRINCIPAL, cv2.WINDOW_GUI_NORMAL)
+    cv2.namedWindow(JANELA_FUNDO, cv2.WINDOW_GUI_NORMAL)
 
     #Abrindo imagens
-    foreground = cv2.imread("recursos/teste1.png", cv2.IMREAD_COLOR)
-    background = cv2.imread("recursos/konoha.jpg", cv2.IMREAD_COLOR)
+    foreground = cv2.imread("recursos/teste2.png", cv2.IMREAD_COLOR)
+    background = cv2.imread("recursos/fundo1.jfif", cv2.IMREAD_COLOR)
 
     #Exibindo imagens
     cv2.imshow(JANELA_PRINCIPAL, foreground)
